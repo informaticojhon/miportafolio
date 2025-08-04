@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: theme('colors.background');
+  color: theme('colors.secondary');
+  font-family: theme('fontFamily.sans');
+}

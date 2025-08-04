@@ -1,0 +1,61 @@
+<nav class="fixed top-0 left-0 w-full z-50 bg-background/80 backdrop-blur-md shadow-sm">
+  <div class="max-w-6xl mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
+    <!-- Logo -->
+    <a href="#inicio" class="text-white font-bold text-xl hover:text-primary transition">
+      Jhon Chiguay 
+    </a>
+
+    <!-- Botón hamburguesa -->
+    <button
+      id="menu-toggle"
+      class="md:hidden text-white p-2 rounded hover:bg-white/10 transition"
+      aria-label="Abrir menú"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- Menú desktop -->
+    <ul class="hidden md:flex gap-6 text-sm font-medium text-secondary">
+      <li><a href="#sobremi" class="hover:text-white transition">Sobre mí</a></li>
+      <li><a href="#proyectos" class="hover:text-white transition">Proyectos</a></li>
+      <li><a href="#contacto" class="hover:text-white transition">Contacto</a></li>
+    </ul>
+  </div>
+
+  <!-- Menú móvil -->
+  <div
+    id="mobile-menu"
+    class="md:hidden flex flex-col items-center gap-6 text-secondary text-base bg-background border-t border-white/10 px-6 py-6 opacity-0 transition-all duration-300 hidden"
+  >
+    <a href="#proyectos" class="hover:text-white transition mobile-link">Proyectos</a>
+    <a href="#sobremi" class="hover:text-white transition mobile-link">Sobre mí</a>
+    <a href="#contacto" class="hover:text-white transition mobile-link">Contacto</a>
+  </div>
+
+  <!-- Script de animación + cierre automático -->
+  <script is:inline>
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const links = document.querySelectorAll('.mobile-link');
+
+    toggle.addEventListener('click', () => {
+      const visible = !menu.classList.contains('hidden');
+      if (visible) {
+        menu.classList.add('opacity-0');
+        setTimeout(() => menu.classList.add('hidden'), 300);
+      } else {
+        menu.classList.remove('hidden');
+        setTimeout(() => menu.classList.remove('opacity-0'), 10);
+      }
+    });
+
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.add('opacity-0');
+        setTimeout(() => menu.classList.add('hidden'), 300);
+      });
+    });
+  </script>
+</nav>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Subtitle from "../components/Subtitle.astro";
+import SobreMi from "../components/SobreMi.astro";
+import Proyectos from "../components/Proyectos.astro";
+import Tecnologias from "../components/tecnologias.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<BaseLayout title="Jhon Chiguay | Portafolio">
+  <!-- Navbar fijo arriba -->
+  <Navbar />
+
+  <!-- Hero -->
+  <section
+<section
+  id="inicio"
+  class="relative h-screen flex flex-col justify-center items-center text-center px-6 md:px-12 text-white bg-cover bg-center"
+  style="background-image: url('/isaac-benhesed-onLbXleIkds-unsplash.jpg');"
+>
+  <!-- Capa oscura superpuesta para mejorar legibilidad del texto -->
+  <div class="absolute inset-0 bg-black/50 z-0"></div>
+
+  <!-- Contenido del Hero -->
+  <div class="relative z-10">
+    <h1 class="text-6xl md:text-7xl font-bold tracking-tight leading-tight mb-4">
+      Jhon Chiguay
+    </h1>
+    <Subtitle />
+  </div>
+</section>
+
+  <SobreMi />
+  <Tecnologias />
+</BaseLayout>
+<Proyectos />
+
+<!-- Contacto -->
+<section
+  id="contacto"
+  class="py-28 px-6 md:px-12 bg-surface text-white border-t border-white/10 text-center"
+>
+  <h2 class="text-4xl font-semibold mb-8">Contacto</h2>
+  <p class="text-lg max-w-3xl mx-auto text-secondary leading-relaxed">
+    Si estás buscando a alguien comprometido, creativo y con ganas de aportar en
+    proyectos web con propósito, estaré encantado de conversar. Ya sea para
+    colaborar, resolver un problema, o simplemente compartir ideas, puedes
+    escribirme directamente a mi correo:
+    <br />
+    <a
+      href="mailto:jhonalan@gmail.com"
+      class="relative inline-block mt-3 text-primary after:block after:h-0.5 after:w-0 after:bg-blue-300 after:transition-all after:duration-300 hover:after:w-full"
+    >
+      jhonalan@gmail.com
+    </a>
+  </p>
+</section>
+
+<!-- Footer -->
+<Footer />

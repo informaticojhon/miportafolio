@@ -1,0 +1,66 @@
+---
+// tecnologias.astro
+const year = new Date().getFullYear();
+---
+
+<section class="bg-white dark:bg-gray-900 py-12 px-6" id="tecnologias">
+  <div class="max-w-6xl mx-auto bg-gray-800/70 rounded-3xl p-8 shadow-md">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+      Tecnologías que manejo
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Lenguajes -->
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          🧐 Lenguajes de Programación
+        </h3>
+        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-5 inline mr-2" /> JavaScript / TypeScript</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="w-5 inline mr-2" /> Python</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" class="w-5 inline mr-2" /> Dart</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-5 inline mr-2" /> HTML / CSS</li>
+          
+        </ul>
+      </div>
+
+      <!-- Frontend -->
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          ⚙️ Frontend
+        </h3>
+        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" class="w-5 inline mr-2" /> Vue.js 3</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" class="w-5 inline mr-2" /> React (Next.js 14)</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/astro/astro-original.svg" class="w-5 inline mr-2" /> Astro</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" class="w-5 inline mr-2" /> Tailwind CSS</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" class="w-5 inline mr-2" /> Bootstrap</li>
+          <li><span class="inline-block w-5 h-5 bg-green-500 text-white text-sm font-bold text-center leading-5 rounded mr-2">G</span> GSAP / Keen Slider</li>
+          <li><span class="inline-block w-5 h-5 bg-gray-300 text-gray-900 text-sm font-bold text-center leading-5 rounded mr-2">E</span> Emotion / Shadcn / Lucide</li>
+          <li><img src="https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png" class="w-4 inline mr-2" /> Leaflet.js</li>
+        </ul>
+      </div>
+
+      <!-- Mobile -->
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          📲 Desarrollo Móvil
+        </h3>
+        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" class="w-5 inline mr-2" /> Flutter (Dart)</li>
+        </ul>
+      </div>
+
+      <!-- Backend -->
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          🖥️ Backend
+        </h3>
+        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" class="w-5 inline mr-2" /> Django</li>
+          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" class="w-5 inline mr-2" /> Express.js</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
