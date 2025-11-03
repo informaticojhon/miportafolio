@@ -1,3 +1,5 @@
 ---
+import { getTranslations } from '../i18n/translations';
+const t = getTranslations('es');
 ---
-<p class="text-xl text-white animate-pulse">Desarrollador Web · Creativo · Apasionado por la tecnología</p>
+<p class="text-xl text-white animate-pulse" data-i18n="hero.subtitle">{t.hero.subtitle}</p>

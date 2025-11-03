@@ -1,64 +1,64 @@
 ---
 // tecnologias.astro
-const year = new Date().getFullYear();
+import { getTranslations } from '../i18n/translations';
+const t = getTranslations('es');
 ---
 
-<section class="bg-white dark:bg-gray-900 py-12 px-6" id="tecnologias">
-  <div class="max-w-6xl mx-auto bg-gray-800/70 rounded-3xl p-8 shadow-md">
-    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-      Tecnologías que manejo
+<section class="bg-light-background dark:bg-surface py-12 px-6 border-t border-gray-200 dark:border-white/10 fade-in" id="tecnologias">
+  <div class="max-w-6xl mx-auto liquid-glass rounded-3xl p-8 shadow-md border border-white/20 dark:border-white/10">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white" data-i18n="technologies.title">
+      {t.technologies.title}
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Lenguajes -->
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-          🧐 Lenguajes de Programación
+      <div class="glass-effect-light dark:glass-effect-dark rounded-2xl p-6 shadow border border-white/20 dark:border-white/10 transition-all hover:scale-105">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          🧐 <span data-i18n="technologies.languages">{t.technologies.languages}</span>
         </h3>
-        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-5 inline mr-2" /> JavaScript / TypeScript</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="w-5 inline mr-2" /> Python</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" class="w-5 inline mr-2" /> Dart</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-5 inline mr-2" /> HTML / CSS</li>
-          
+        <ul class="space-y-2 text-light-secondary dark:text-secondary">
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="w-5 h-5 mr-2" /> JavaScript / TypeScript</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="w-5 h-5 mr-2" /> Python</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart" class="w-5 h-5 mr-2" /> Dart</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="w-5 h-5 mr-2" /> HTML / CSS</li>
         </ul>
       </div>
 
       <!-- Frontend -->
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-          ⚙️ Frontend
+      <div class="glass-effect-light dark:glass-effect-dark rounded-2xl p-6 shadow border border-white/20 dark:border-white/10 transition-all hover:scale-105">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          ⚙️ <span data-i18n="technologies.frontend">{t.technologies.frontend}</span>
         </h3>
-        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" class="w-5 inline mr-2" /> Vue.js 3</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" class="w-5 inline mr-2" /> React (Next.js 14)</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/astro/astro-original.svg" class="w-5 inline mr-2" /> Astro</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" class="w-5 inline mr-2" /> Tailwind CSS</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" class="w-5 inline mr-2" /> Bootstrap</li>
-          <li><span class="inline-block w-5 h-5 bg-green-500 text-white text-sm font-bold text-center leading-5 rounded mr-2">G</span> GSAP / Keen Slider</li>
-          <li><span class="inline-block w-5 h-5 bg-gray-300 text-gray-900 text-sm font-bold text-center leading-5 rounded mr-2">E</span> Emotion / Shadcn / Lucide</li>
-          <li><img src="https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png" class="w-4 inline mr-2" /> Leaflet.js</li>
+        <ul class="space-y-2 text-light-secondary dark:text-secondary">
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" alt="Vue.js" class="w-5 h-5 mr-2" /> Vue.js 3</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="w-5 h-5 mr-2" /> React (Next.js 14)</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/astro/astro-original.svg" alt="Astro" class="w-5 h-5 mr-2" /> Astro</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" class="w-5 h-5 mr-2" /> Tailwind CSS</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" class="w-5 h-5 mr-2" /> Bootstrap</li>
+          <li class="flex items-center"><span class="inline-block w-5 h-5 bg-green-500 text-white text-sm font-bold text-center leading-5 rounded mr-2 flex-shrink-0" aria-label="GSAP">G</span> GSAP / Keen Slider</li>
+          <li class="flex items-center"><span class="inline-block w-5 h-5 bg-gray-300 text-gray-900 text-sm font-bold text-center leading-5 rounded mr-2 flex-shrink-0" aria-label="Emotion">E</span> Emotion / Shadcn / Lucide</li>
+          <li class="flex items-center"><img src="https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png" alt="Leaflet.js" class="w-4 h-4 mr-2" /> Leaflet.js</li>
         </ul>
       </div>
 
       <!-- Mobile -->
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-          📲 Desarrollo Móvil
+      <div class="glass-effect-light dark:glass-effect-dark rounded-2xl p-6 shadow border border-white/20 dark:border-white/10 transition-all hover:scale-105">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          📲 <span data-i18n="technologies.mobile">{t.technologies.mobile}</span>
         </h3>
-        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" class="w-5 inline mr-2" /> Flutter (Dart)</li>
+        <ul class="space-y-2 text-light-secondary dark:text-secondary">
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" class="w-5 h-5 mr-2" /> Flutter (Dart)</li>
         </ul>
       </div>
 
       <!-- Backend -->
-      <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 shadow">
-        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
-          🖥️ Backend
+      <div class="glass-effect-light dark:glass-effect-dark rounded-2xl p-6 shadow border border-white/20 dark:border-white/10 transition-all hover:scale-105">
+        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+          🖥️ <span data-i18n="technologies.backend">{t.technologies.backend}</span>
         </h3>
-        <ul class="space-y-2 text-gray-700 dark:text-gray-200">
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" class="w-5 inline mr-2" /> Django</li>
-          <li><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" class="w-5 inline mr-2" /> Express.js</li>
+        <ul class="space-y-2 text-light-secondary dark:text-secondary">
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" alt="Django" class="w-5 h-5 mr-2" /> Django</li>
+          <li class="flex items-center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js" class="w-5 h-5 mr-2" /> Express.js</li>
         </ul>
       </div>
     </div>

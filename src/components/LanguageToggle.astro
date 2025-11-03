@@ -1,0 +1,64 @@
+---
+// LanguageToggle.astro - Selector de idioma ES/EN
+---
+
+<div class="fixed top-24 left-6 z-40">
+  <button
+    id="language-toggle"
+    type="button"
+    class="flex items-center gap-2 px-4 py-2 rounded-full glass-effect-light dark:glass-effect-dark border border-white/30 dark:border-white/10 shadow-lg hover:scale-105 transition-transform duration-300"
+    aria-label="Cambiar idioma"
+  >
+    <span id="current-flag" class="text-xl">🇪🇸</span>
+    <span id="current-lang" class="text-sm font-medium text-gray-900 dark:text-white">ES</span>
+  </button>
+</div>
+
+<script is:inline>
+  // Función para obtener el idioma actual
+  function getLanguage() {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('language')) {
+      return localStorage.getItem('language');
+    }
+    // Detectar idioma del navegador
+    const browserLang = navigator.language.toLowerCase();
+    return browserLang.startsWith('es') ? 'es' : 'en';
+  }
+
+  // Función para actualizar el idioma
+  function updateLanguage(lang) {
+    const flag = document.getElementById('current-flag');
+    const langText = document.getElementById('current-lang');
+    
+    if (lang === 'es') {
+      flag.textContent = '🇪🇸';
+      langText.textContent = 'ES';
+    } else {
+      flag.textContent = '🇺🇸';
+      langText.textContent = 'EN';
+    }
+    
+    localStorage.setItem('language', lang);
+    
+    // Disparar evento personalizado para que los componentes se actualicen
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
+  }
+
+  // Inicializar idioma
+  const currentLang = getLanguage();
+  updateLanguage(currentLang);
+
+  // Event listener para el botón
+  document.getElementById('language-toggle')?.addEventListener('click', () => {
+    const lang = getLanguage() === 'es' ? 'en' : 'es';
+    updateLanguage(lang);
+    
+    // Recargar la página para aplicar las traducciones
+    window.location.reload();
+  });
+
+  // Actualizar al navegar (para SPAs)
+  document.addEventListener('astro:after-swap', () => {
+    updateLanguage(getLanguage());
+  });
+</script>

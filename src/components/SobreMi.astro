@@ -1,20 +1,47 @@
-<section id="sobremi" class="bg-white dark:bg-gray-900 py-20 px-6">
+---
+import { getTranslations } from '../i18n/translations';
+const t = getTranslations('es');
+---
+
+<section id="sobremi" class="bg-light-surface dark:bg-surface py-20 px-6 border-t border-gray-200 dark:border-white/10 fade-in">
   <div class="max-w-4xl mx-auto text-center">
-    <h2 class="text-4xl font-bold mb-6 text-gray-800 dark:text-white">👨‍💻 Sobre mí</h2>
+    <h2 class="text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+      👨‍💻 <span data-i18n="about.title">{t.about.title}</span>
+    </h2>
 
-    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
-      ¡Hola! Soy <span class="font-semibold text-blue-500">Jhon Chiguay</span>, un <strong>desarrollador web</strong> apasionado por construir experiencias digitales modernas, funcionales y accesibles.
-    Disfruto trabajar con tecnologías como 🟩 Vue.js, 🌀 Astro, 💻 Django y 📱 Flutter.
+    <p class="text-lg leading-relaxed text-light-secondary dark:text-secondary mb-4">
+      <span data-i18n="about.intro">{t.about.intro}</span> <span class="font-semibold text-light-primary dark:text-primary">Jhon Chiguay</span>, un <span data-i18n="about.role">{t.about.role}</span> <span data-i18n="about.description1">{t.about.description1}</span>
     </p>
 
-    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
-      Me destaco por ser autodidacta, creativo y detallista. Cada línea de código que escribo tiene un propósito claro: <strong>resolver problemas reales</strong> con soluciones limpias y eficientes ✨. 
+    <p class="text-lg leading-relaxed text-light-secondary dark:text-secondary mb-4">
+      <span data-i18n="about.description2">{t.about.description2}</span> <strong class="text-gray-900 dark:text-white" data-i18n="about.highlight">{t.about.highlight}</strong> <span data-i18n="about.description2end">{t.about.description2end}</span>
     </p>
-    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
-      Además de mi pasión por el desarrollo, disfruto aprender sobre nuevas tecnologías y tendencias en el mundo digital. Siempre estoy buscando formas de mejorar mis habilidades y aportar valor a los proyectos en los que participo.
-
-    <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-      Actualmente vivo en <strong>Melinka, Región de Aysén</strong> 🌊, y puedes contactarme a través de mi correo. 
+    
+    <p class="text-lg leading-relaxed text-light-secondary dark:text-secondary mb-4" data-i18n="about.description3">
+      {t.about.description3}
+    </p>
+    
+    <p class="text-lg leading-relaxed text-light-secondary dark:text-secondary">
+      <span data-i18n="about.location">{t.about.location}</span> <strong class="text-gray-900 dark:text-white" data-i18n="about.locationPlace">{t.about.locationPlace}</strong> 🌊<span data-i18n="about.locationEnd">{t.about.locationEnd}</span>
     </p>
   </div>
 </section>
+
+<script>
+  // Intersection Observer para animaciones
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+  animatedElements.forEach(el => observer.observe(el));
+</script>

@@ -1,21 +1,67 @@
 ---
 import '../styles/global.css';
-const { title } = Astro.props;
+import ThemeToggle from '../components/ThemeToggle.astro';
+import LanguageToggle from '../components/LanguageToggle.astro';
+
+const { title, description = "Desarrollador web full-stack especializado en Vue.js, Astro, Django y Flutter. Creando experiencias digitales modernas desde Melinka, Chile." } = Astro.props;
 ---
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <meta name="description" content={description} />
     <link rel="icon" href="/favicon.ico" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://jhonchiguay.dev" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <!-- Additional Meta Tags -->
+    <meta name="author" content="Jhon Chiguay" />
+    <meta name="keywords" content="desarrollador web, frontend, backend, Vue.js, Astro, Django, Flutter, portafolio, Melinka, Chile" />
+    <meta name="theme-color" content="#38bdf8" />
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Script para prevenir flash del tema -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+    
+    <!-- Script de traducciones -->
+    <script>
+      import '../scripts/i18n.ts';
+    </script>
   </head>
   
-  <body class="bg-background text-secondary font-sans">
+  <body class="bg-light-background dark:bg-background text-light-secondary dark:text-secondary font-sans transition-colors duration-300">
+    <ThemeToggle />
+    <LanguageToggle />
     <slot />
   </body>
 </html>
