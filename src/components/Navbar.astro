@@ -8,7 +8,7 @@ const t = getTranslations('es'); // Default a español, se actualizará con JS
 <nav class="fixed top-0 left-0 w-full z-50 glass-effect-light dark:glass-effect-dark backdrop-blur-md shadow-sm border-b border-white/20 dark:border-white/10">
   <div class="max-w-6xl mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
     <!-- Logo -->
-    <a href="#inicio" class="text-gray-900 dark:text-white font-bold text-xl hover:text-light-primary dark:hover:text-primary transition">
+    <a href="/" class="text-gray-900 dark:text-white font-bold text-xl hover:text-light-primary dark:hover:text-primary transition">
       Jhon Chiguay 
     </a>
 
@@ -25,10 +25,10 @@ const t = getTranslations('es'); // Default a español, se actualizará con JS
 
     <!-- Menú desktop -->
     <ul class="hidden md:flex gap-6 text-sm font-medium text-light-secondary dark:text-secondary">
-      <li><a href="#sobremi" class="hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.about">{t.nav.about}</a></li>
-      <li><a href="#proyectos" class="hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.projects">{t.nav.projects}</a></li>
-      <li><a href="/qr-generator" class="hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.tools">{t.nav.tools}</a></li>
-      <li><a href="#contacto" class="hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.contact">{t.nav.contact}</a></li>
+      <li><a href="/#sobremi" class="nav-link hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.about">{t.nav.about}</a></li>
+      <li><a href="/#proyectos" class="nav-link hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.projects">{t.nav.projects}</a></li>
+      <li><a href="/qr-generator" class="nav-link hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.tools">{t.nav.tools}</a></li>
+      <li><a href="/#contacto" class="nav-link hover:text-gray-900 dark:hover:text-white transition" data-i18n="nav.contact">{t.nav.contact}</a></li>
     </ul>
   </div>
 
@@ -37,10 +37,10 @@ const t = getTranslations('es'); // Default a español, se actualizará con JS
     id="mobile-menu"
     class="md:hidden hidden flex-col items-center gap-6 text-light-secondary dark:text-secondary text-base bg-light-surface dark:bg-background border-t border-gray-200 dark:border-white/10 px-6 py-6 opacity-0 transition-all duration-300"
   >
-    <a href="#proyectos" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.projects">{t.nav.projects}</a>
-    <a href="#sobremi" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.about">{t.nav.about}</a>
+    <a href="/#proyectos" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.projects">{t.nav.projects}</a>
+    <a href="/#sobremi" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.about">{t.nav.about}</a>
     <a href="/qr-generator" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.tools">{t.nav.tools}</a>
-    <a href="#contacto" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.contact">{t.nav.contact}</a>
+    <a href="/#contacto" class="hover:text-gray-900 dark:hover:text-white transition mobile-link" data-i18n="nav.contact">{t.nav.contact}</a>
   </div>
 
   <!-- Script de animación + cierre automático -->
