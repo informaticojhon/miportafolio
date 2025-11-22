@@ -1,0 +1,1544 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<BaseLayout title="Generador QR Pro | Jhon Chiguay">
+  <Navbar />
+  
+  <!-- QR Generator Container -->
+  <div class="qr-generator-wrapper">
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="url(#gradient)"/>
+            <rect x="8" y="8" width="6" height="6" fill="white"/>
+            <rect x="8" y="26" width="6" height="6" fill="white"/>
+            <rect x="26" y="8" width="6" height="6" fill="white"/>
+            <rect x="18" y="18" width="4" height="4" fill="white"/>
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#667eea"/>
+                <stop offset="100%" stop-color="#764ba2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <h1>QR Pro Generator</h1>
+        </div>
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-number" id="totalQRs">0</span>
+            <span class="stat-label">Códigos Generados</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Generator Section -->
+        <section class="generator-section">
+          <div class="card generator-card">
+            <h2>Generar Código QR</h2>
+            <p class="subtitle">Crea códigos QR permanentes que nunca vencen</p>
+            
+            <div class="form-group">
+              <label for="qrType">Tipo de contenido</label>
+              <select id="qrType" class="input-field">
+                <option value="url">URL / Sitio Web</option>
+                <option value="text">Texto</option>
+                <option value="email">Email</option>
+                <option value="phone">Teléfono</option>
+                <option value="sms">SMS</option>
+                <option value="wifi">WiFi</option>
+              </select>
+            </div>
+
+            <div id="urlFields" class="dynamic-fields">
+              <div class="form-group">
+                <label for="qrContent">URL del sitio web</label>
+                <input type="text" id="qrContent" class="input-field" placeholder="https://ejemplo.com">
+              </div>
+            </div>
+
+            <div id="textFields" class="dynamic-fields" style="display:none;">
+              <div class="form-group">
+                <label for="textContent">Texto</label>
+                <textarea id="textContent" class="input-field" rows="4" placeholder="Escribe tu texto aquí..."></textarea>
+              </div>
+            </div>
+
+            <div id="emailFields" class="dynamic-fields" style="display:none;">
+              <div class="form-group">
+                <label for="emailAddress">Dirección de email</label>
+                <input type="email" id="emailAddress" class="input-field" placeholder="correo@ejemplo.com">
+              </div>
+              <div class="form-group">
+                <label for="emailSubject">Asunto (opcional)</label>
+                <input type="text" id="emailSubject" class="input-field" placeholder="Asunto del correo">
+              </div>
+            </div>
+
+            <div id="phoneFields" class="dynamic-fields" style="display:none;">
+              <div class="form-group">
+                <label for="phoneNumber">Número de teléfono</label>
+                <input type="tel" id="phoneNumber" class="input-field" placeholder="+569 1234 5678">
+              </div>
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="useWhatsApp" class="checkbox-field">
+                  <span>Abrir en WhatsApp</span>
+                </label>
+              </div>
+              <div id="whatsappMessageField" class="form-group" style="display:none;">
+                <label for="whatsappMessage">Mensaje predeterminado (opcional)</label>
+                <textarea id="whatsappMessage" class="input-field" rows="3" placeholder="Hola! Me gustaría..."></textarea>
+              </div>
+            </div>
+
+            <div id="smsFields" class="dynamic-fields" style="display:none;">
+              <div class="form-group">
+                <label for="smsNumber">Número de teléfono</label>
+                <input type="tel" id="smsNumber" class="input-field" placeholder="+34 123 456 789">
+              </div>
+              <div class="form-group">
+                <label for="smsMessage">Mensaje</label>
+                <textarea id="smsMessage" class="input-field" rows="3" placeholder="Mensaje del SMS"></textarea>
+              </div>
+            </div>
+
+            <div id="wifiFields" class="dynamic-fields" style="display:none;">
+              <div class="form-group">
+                <label for="wifiSSID">Nombre de la red (SSID)</label>
+                <input type="text" id="wifiSSID" class="input-field" placeholder="Mi WiFi">
+              </div>
+              <div class="form-group">
+                <label for="wifiPassword">Contraseña</label>
+                <input type="text" id="wifiPassword" class="input-field" placeholder="Contraseña">
+              </div>
+              <div class="form-group">
+                <label for="wifiEncryption">Tipo de seguridad</label>
+                <select id="wifiEncryption" class="input-field">
+                  <option value="WPA">WPA/WPA2</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">Sin contraseña</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="qrName">Nombre del QR (opcional)</label>
+              <input type="text" id="qrName" class="input-field" placeholder="Ej: Mi sitio web personal">
+            </div>
+
+            <div class="form-group">
+              <label for="qrColor">Color del QR</label>
+              <div class="color-picker-group">
+                <input type="color" id="qrColor" value="#000000">
+                <span class="color-value">#000000</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="generateBtn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Generar Código QR
+            </button>
+          </div>
+
+          <!-- QR Preview -->
+          <div class="card preview-card" id="previewCard" style="display:none;">
+            <h3>Vista Previa</h3>
+            <div class="qr-preview" id="qrPreview"></div>
+            <div class="preview-info" id="previewInfo"></div>
+            <div class="button-group">
+              <button class="btn btn-secondary" id="downloadBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 3V13M10 13L6 9M10 13L14 9M3 17H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Descargar PNG
+              </button>
+              <button class="btn btn-outline" id="downloadSvgBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 3V13M10 13L6 9M10 13L14 9M3 17H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Descargar SVG
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- History Section -->
+        <section class="history-section">
+          <div class="card history-card">
+            <div class="history-header">
+              <h2>Historial de Códigos QR</h2>
+              <div class="history-actions">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar...">
+                <button class="btn btn-danger-outline" id="clearAllBtn">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 5H15M7 8V13M11 8V13M4 5L5 15C5 15.5304 5.21071 16.0391 5.58579 16.4142C5.96086 16.7893 6.46957 17 7 17H11C11.5304 17 12.0391 16.7893 12.4142 16.4142C12.7893 16.0391 13 15.5304 13 15L14 5M6 5V3C6 2.73478 6.10536 2.48043 6.29289 2.29289C6.48043 2.10536 6.73478 2 7 2H11C11.2652 2 11.5196 2.10536 11.7071 2.29289C11.8946 2.48043 12 2.73478 12 3V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Limpiar Todo
+                </button>
+              </div>
+            </div>
+            <div class="history-grid" id="historyGrid">
+              <div class="empty-state">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="15" y="15" width="50" height="50" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+                  <rect x="25" y="25" width="8" height="8" fill="currentColor"/>
+                  <rect x="25" y="47" width="8" height="8" fill="currentColor"/>
+                  <rect x="47" y="25" width="8" height="8" fill="currentColor"/>
+                </svg>
+                <p>No hay códigos QR guardados todavía</p>
+                <p class="empty-subtitle">Genera tu primer código QR para comenzar</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="qr-footer">
+        <p>© 2025 QR Pro Generator - Códigos QR permanentes y sin vencimiento</p>
+      </div>
+    </div>
+
+    <!-- Modal for QR Details -->
+    <div class="modal" id="qrModal">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <h3 id="modalTitle"></h3>
+        <div class="modal-body">
+          <div id="modalQR" class="modal-qr"></div>
+          <div class="modal-info" id="modalInfo"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="modalDownloadBtn">Descargar PNG</button>
+          <button class="btn btn-outline" id="modalDownloadSvgBtn">Descargar SVG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .qr-generator-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding-top: 80px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary-color: #667eea;
+    --primary-dark: #5568d3;
+    --secondary-color: #764ba2;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    animation: fadeInDown 0.6s ease-out;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .stats {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+  }
+
+  /* Main Content */
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Card */
+  .card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-xl);
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: var(--card-bg);
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .input-field::placeholder {
+    color: var(--text-secondary);
+  }
+
+  textarea.input-field {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  select.input-field {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 3rem;
+  }
+
+  .color-picker-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .color-picker-group input[type="color"] {
+    width: 60px;
+    height: 45px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .color-value {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .dynamic-fields {
+    transition: opacity 0.3s ease;
+  }
+
+  /* Checkbox */
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+
+  .checkbox-field {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+  }
+
+  .checkbox-label span {
+    user-select: none;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: var(--primary-dark);
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+  }
+
+  .btn-outline:hover {
+    background: var(--primary-color);
+    color: white;
+  }
+
+  .btn-danger-outline {
+    background: transparent;
+    border: 2px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-danger-outline:hover {
+    background: var(--danger-color);
+    color: white;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .button-group .btn {
+    flex: 1;
+  }
+
+  /* Preview Card */
+  .preview-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  .qr-preview {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 1.5rem;
+  }
+
+  .qr-preview canvas {
+    display: block;
+    border-radius: 8px;
+  }
+
+  .preview-info {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  /* History Section */
+  .history-card {
+    grid-column: 1 / -1;
+  }
+
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .history-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .search-input {
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    min-width: 250px;
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  .history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .history-item {
+    background: var(--bg-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .history-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+  }
+
+  .history-item-qr {
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .history-item-qr canvas {
+    border-radius: 8px;
+  }
+
+  .history-item-info {
+    margin-bottom: 1rem;
+  }
+
+  .history-item-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+  }
+
+  .history-item-content {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .history-item-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .history-item-type {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+
+  .history-item-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .icon-btn {
+    background: white;
+    border: 2px solid var(--border-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .icon-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: scale(1.1);
+  }
+
+  .icon-btn.delete:hover {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+  }
+
+  /* Empty State */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+  }
+
+  .empty-state svg {
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+  }
+
+  .empty-state p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-subtitle {
+    font-size: 0.9rem !important;
+    opacity: 0.7;
+  }
+
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .modal.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--bg-color);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .modal-close:hover {
+    background: var(--border-color);
+    transform: rotate(90deg);
+  }
+
+  .modal-body {
+    margin: 2rem 0;
+  }
+
+  .modal-qr {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-info {
+    background: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .modal-info p {
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    word-break: break-all;
+  }
+
+  .modal-info strong {
+    color: var(--text-primary);
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .modal-footer .btn {
+    flex: 1;
+  }
+
+  /* Footer */
+  .qr-footer {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .main-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .history-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    .header {
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    
+    .logo h1 {
+      font-size: 1.5rem;
+    }
+    
+    .stats {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .history-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .history-actions {
+      flex-direction: column;
+    }
+    
+    .search-input {
+      width: 100%;
+    }
+    
+    .history-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+      width: 95%;
+      padding: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      padding: 1.5rem;
+    }
+    
+    .button-group {
+      flex-direction: column;
+    }
+    
+    .stat-item {
+      padding: 0.75rem 1rem;
+    }
+    
+    .stat-number {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script is:inline>
+  // Wait for QRious to load
+  window.addEventListener('load', function() {
+    if (typeof QRious === 'undefined') {
+      console.error('QRious no se cargó correctamente');
+      return;
+    }
+    
+    console.log('QRious cargado correctamente');
+    
+  // Storage Manager
+  class QRStorage {
+    constructor() {
+      this.storageKey = 'qr_pro_codes';
+    }
+
+    getAll() {
+      try {
+        const data = localStorage.getItem(this.storageKey);
+        return data ? JSON.parse(data) : [];
+      } catch (error) {
+        console.error('Error loading QR codes:', error);
+        return [];
+      }
+    }
+
+    save(qrData) {
+      try {
+        const codes = this.getAll();
+        codes.unshift(qrData);
+        localStorage.setItem(this.storageKey, JSON.stringify(codes));
+        return true;
+      } catch (error) {
+        console.error('Error saving QR code:', error);
+        return false;
+      }
+    }
+
+    delete(id) {
+      try {
+        const codes = this.getAll();
+        const filtered = codes.filter(code => code.id !== id);
+        localStorage.setItem(this.storageKey, JSON.stringify(filtered));
+        return true;
+      } catch (error) {
+        console.error('Error deleting QR code:', error);
+        return false;
+      }
+    }
+
+    clear() {
+      try {
+        localStorage.removeItem(this.storageKey);
+        return true;
+      } catch (error) {
+        console.error('Error clearing QR codes:', error);
+        return false;
+      }
+    }
+  }
+
+  // QR Generator Manager
+  class QRGenerator {
+    constructor() {
+      console.log('Inicializando QR Generator...');
+      this.storage = new QRStorage();
+      this.currentQR = null;
+      this.initElements();
+      this.initEventListeners();
+      this.loadHistory();
+      this.updateStats();
+      console.log('QR Generator inicializado correctamente');
+    }
+
+    initElements() {
+      // Form elements
+      this.qrType = document.getElementById('qrType');
+      this.qrContent = document.getElementById('qrContent');
+      this.qrName = document.getElementById('qrName');
+      this.qrColor = document.getElementById('qrColor');
+      this.generateBtn = document.getElementById('generateBtn');
+      
+      // Dynamic fields
+      this.urlFields = document.getElementById('urlFields');
+      this.textFields = document.getElementById('textFields');
+      this.emailFields = document.getElementById('emailFields');
+      this.phoneFields = document.getElementById('phoneFields');
+      this.smsFields = document.getElementById('smsFields');
+      this.wifiFields = document.getElementById('wifiFields');
+      
+      // WhatsApp elements
+      this.useWhatsApp = document.getElementById('useWhatsApp');
+      this.whatsappMessageField = document.getElementById('whatsappMessageField');
+      
+      // Preview elements
+      this.previewCard = document.getElementById('previewCard');
+      this.qrPreview = document.getElementById('qrPreview');
+      this.previewInfo = document.getElementById('previewInfo');
+      this.downloadBtn = document.getElementById('downloadBtn');
+      this.downloadSvgBtn = document.getElementById('downloadSvgBtn');
+      
+      // History elements
+      this.historyGrid = document.getElementById('historyGrid');
+      this.searchInput = document.getElementById('searchInput');
+      this.clearAllBtn = document.getElementById('clearAllBtn');
+      this.totalQRs = document.getElementById('totalQRs');
+      
+      // Modal elements
+      this.modal = document.getElementById('qrModal');
+      this.modalClose = document.getElementById('modalClose');
+      this.modalTitle = document.getElementById('modalTitle');
+      this.modalQR = document.getElementById('modalQR');
+      this.modalInfo = document.getElementById('modalInfo');
+      this.modalDownloadBtn = document.getElementById('modalDownloadBtn');
+      this.modalDownloadSvgBtn = document.getElementById('modalDownloadSvgBtn');
+    }
+
+    initEventListeners() {
+      // Type selector
+      this.qrType.addEventListener('change', () => this.handleTypeChange());
+      
+      // Color picker
+      this.qrColor.addEventListener('input', (e) => {
+        document.querySelector('.color-value').textContent = e.target.value;
+      });
+      
+      // WhatsApp checkbox
+      this.useWhatsApp.addEventListener('change', (e) => {
+        this.whatsappMessageField.style.display = e.target.checked ? 'block' : 'none';
+      });
+      
+      // Generate button
+      this.generateBtn.addEventListener('click', () => {
+        console.log('Botón generar clickeado');
+        this.generateQR();
+      });
+      
+      // Download buttons
+      this.downloadBtn.addEventListener('click', () => this.downloadQR('png'));
+      this.downloadSvgBtn.addEventListener('click', () => this.downloadQR('svg'));
+      
+      // History actions
+      this.searchInput.addEventListener('input', (e) => this.searchHistory(e.target.value));
+      this.clearAllBtn.addEventListener('click', () => this.clearAllHistory());
+      
+      // Modal
+      this.modalClose.addEventListener('click', () => this.closeModal());
+      this.modal.addEventListener('click', (e) => {
+        if (e.target === this.modal) this.closeModal();
+      });
+      this.modalDownloadBtn.addEventListener('click', () => this.downloadModalQR('png'));
+      this.modalDownloadSvgBtn.addEventListener('click', () => this.downloadModalQR('svg'));
+    }
+
+    handleTypeChange() {
+      // Hide all dynamic fields
+      const allFields = [this.urlFields, this.textFields, this.emailFields, 
+                        this.phoneFields, this.smsFields, this.wifiFields];
+      allFields.forEach(field => field.style.display = 'none');
+      
+      // Show relevant fields
+      const type = this.qrType.value;
+      switch(type) {
+        case 'url':
+          this.urlFields.style.display = 'block';
+          break;
+        case 'text':
+          this.textFields.style.display = 'block';
+          break;
+        case 'email':
+          this.emailFields.style.display = 'block';
+          break;
+        case 'phone':
+          this.phoneFields.style.display = 'block';
+          break;
+        case 'sms':
+          this.smsFields.style.display = 'block';
+          break;
+        case 'wifi':
+          this.wifiFields.style.display = 'block';
+          break;
+      }
+    }
+
+    getQRContent() {
+      const type = this.qrType.value;
+      let content = '';
+      let displayContent = '';
+      let isWhatsApp = false;
+      
+      switch(type) {
+        case 'url':
+          content = this.qrContent.value.trim();
+          displayContent = content;
+          if (content && !content.startsWith('http://') && !content.startsWith('https://')) {
+            content = 'https://' + content;
+          }
+          break;
+        
+        case 'text':
+          content = document.getElementById('textContent').value.trim();
+          displayContent = content;
+          break;
+        
+        case 'email':
+          const email = document.getElementById('emailAddress').value.trim();
+          const subject = document.getElementById('emailSubject').value.trim();
+          content = `mailto:${email}${subject ? '?subject=' + encodeURIComponent(subject) : ''}`;
+          displayContent = email;
+          break;
+        
+        case 'phone':
+          const phone = document.getElementById('phoneNumber').value.trim();
+          const useWhatsApp = document.getElementById('useWhatsApp').checked;
+          
+          if (useWhatsApp) {
+            // Limpiar el número de teléfono (quitar espacios, guiones, etc.)
+            const cleanPhone = phone.replace(/\D/g, '');
+            const whatsappMessage = document.getElementById('whatsappMessage').value.trim();
+            
+            if (whatsappMessage) {
+              content = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+            } else {
+              content = `https://wa.me/${cleanPhone}`;
+            }
+            displayContent = `WhatsApp: ${phone}`;
+            isWhatsApp = true;
+          } else {
+            content = `tel:${phone}`;
+            displayContent = phone;
+          }
+          break;
+        
+        case 'sms':
+          const smsNumber = document.getElementById('smsNumber').value.trim();
+          const smsMessage = document.getElementById('smsMessage').value.trim();
+          content = `sms:${smsNumber}${smsMessage ? '?body=' + encodeURIComponent(smsMessage) : ''}`;
+          displayContent = smsNumber;
+          break;
+        
+        case 'wifi':
+          const ssid = document.getElementById('wifiSSID').value.trim();
+          const password = document.getElementById('wifiPassword').value.trim();
+          const encryption = document.getElementById('wifiEncryption').value;
+          content = `WIFI:T:${encryption};S:${ssid};P:${password};;`;
+          displayContent = ssid;
+          break;
+      }
+      
+      return { content, displayContent, type, isWhatsApp };
+    }
+
+    generateQR() {
+      const { content, displayContent, type, isWhatsApp } = this.getQRContent();
+      
+      if (!content) {
+        alert('Por favor, completa los campos requeridos');
+        return;
+      }
+      
+      console.log('Generando QR con:', { content, displayContent, type, isWhatsApp });
+      
+      // Clear previous QR
+      this.qrPreview.innerHTML = '';
+      
+      try {
+        // Create canvas element
+        const canvas = document.createElement('canvas');
+        
+        // Generate QR code using QRious
+        const qr = new QRious({
+          element: canvas,
+          value: content,
+          size: 256,
+          foreground: this.qrColor.value,
+          background: '#ffffff',
+          level: 'H'
+        });
+        
+        this.qrPreview.appendChild(canvas);
+        console.log('QR generado exitosamente');
+      } catch (error) {
+        console.error('Error generando QR:', error);
+        alert('Error al generar el código QR. Por favor, verifica los datos e intenta de nuevo.');
+        return;
+      }
+      
+      // Show preview
+      this.previewCard.style.display = 'flex';
+      this.previewInfo.innerHTML = `
+        <strong>${isWhatsApp ? 'WhatsApp' : this.getTypeName(type)}</strong><br>
+        ${displayContent}
+      `;
+      
+      // Save to storage
+      const qrData = {
+        id: Date.now().toString(),
+        name: this.qrName.value.trim() || `QR ${isWhatsApp ? 'WhatsApp' : this.getTypeName(type)}`,
+        type: type,
+        content: content,
+        displayContent: displayContent,
+        color: this.qrColor.value,
+        isWhatsApp: isWhatsApp,
+        createdAt: new Date().toISOString(),
+        timestamp: Date.now()
+      };
+      
+      this.storage.save(qrData);
+      this.currentQR = qrData;
+      
+      // Update UI
+      this.loadHistory();
+      this.updateStats();
+      
+      // Scroll to preview
+      this.previewCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    getTypeName(type) {
+      const types = {
+        'url': 'URL',
+        'text': 'Texto',
+        'email': 'Email',
+        'phone': 'Teléfono',
+        'sms': 'SMS',
+        'wifi': 'WiFi'
+      };
+      return types[type] || type;
+    }
+
+    downloadQR(format) {
+      if (!this.currentQR) return;
+      
+      const canvas = this.qrPreview.querySelector('canvas');
+      if (!canvas) return;
+      
+      if (format === 'png') {
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${this.currentQR.name.replace(/[^a-z0-9]/gi, '_')}_${this.currentQR.id}.png`;
+        a.click();
+      } else if (format === 'svg') {
+        // Convert canvas to SVG (simplified version)
+        this.downloadCanvasAsSVG(canvas, this.currentQR.name);
+      }
+    }
+
+    downloadCanvasAsSVG(canvas, name) {
+      const ctx = canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+      
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">`;
+      
+      // Create rectangles for each pixel
+      for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+          const i = (y * canvas.width + x) * 4;
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const a = data[i + 3] / 255;
+          
+          if (a > 0 && (r < 200 || g < 200 || b < 200)) {
+            const color = `rgb(${r},${g},${b})`;
+            svg += `<rect x="${x}" y="${y}" width="1" height="1" fill="${color}" opacity="${a}"/>`;
+          }
+        }
+      }
+      
+      svg += '</svg>';
+      
+      const blob = new Blob([svg], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${name.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.svg`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    loadHistory(searchTerm = '') {
+      const codes = this.storage.getAll();
+      
+      if (codes.length === 0) {
+        this.historyGrid.innerHTML = `
+          <div class="empty-state">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="15" y="15" width="50" height="50" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+              <rect x="25" y="25" width="8" height="8" fill="currentColor"/>
+              <rect x="25" y="47" width="8" height="8" fill="currentColor"/>
+              <rect x="47" y="25" width="8" height="8" fill="currentColor"/>
+            </svg>
+            <p>No hay códigos QR guardados todavía</p>
+            <p class="empty-subtitle">Genera tu primer código QR para comenzar</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Filter by search term
+      const filtered = searchTerm 
+        ? codes.filter(code => 
+            code.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            code.displayContent.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        : codes;
+      
+      if (filtered.length === 0) {
+        this.historyGrid.innerHTML = `
+          <div class="empty-state">
+            <p>No se encontraron resultados</p>
+          </div>
+        `;
+        return;
+      }
+      
+      this.historyGrid.innerHTML = filtered.map(code => this.createHistoryItem(code)).join('');
+      
+      // Add event listeners to history items
+      this.attachHistoryListeners();
+    }
+
+    createHistoryItem(code) {
+      const date = new Date(code.createdAt);
+      const formattedDate = date.toLocaleDateString('es-ES', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric' 
+      });
+      
+      return `
+        <div class="history-item" data-id="${code.id}">
+          <div class="history-item-qr" id="qr-${code.id}"></div>
+          <div class="history-item-info">
+            <div class="history-item-name">${code.name}</div>
+            <div class="history-item-content">${code.displayContent}</div>
+          </div>
+          <div class="history-item-meta">
+            <span class="history-item-type">${code.isWhatsApp ? 'WhatsApp' : this.getTypeName(code.type)}</span>
+            <span class="history-item-date">${formattedDate}</span>
+          </div>
+          <div class="history-item-actions">
+            <button class="icon-btn download-item" data-id="${code.id}" title="Descargar">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 3V11M9 11L6 8M9 11L12 8M3 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="icon-btn delete delete-item" data-id="${code.id}" title="Eliminar">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 5H15M7 8V13M11 8V13M4 5L5 15C5 15.5304 5.21071 16.0391 5.58579 16.4142C5.96086 16.7893 6.46957 17 7 17H11C11.5304 17 12.0391 16.7893 12.4142 16.4142C12.7893 16.0391 13 15.5304 13 15L14 5M6 5V3C6 2.73478 6.10536 2.48043 6.29289 2.29289C6.48043 2.10536 6.73478 2 7 2H11C11.2652 2 11.5196 2.10536 11.7071 2.29289C11.8946 2.48043 12 2.73478 12 3V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    attachHistoryListeners() {
+      // Generate QR codes for history items
+      const codes = this.storage.getAll();
+      codes.forEach(code => {
+        const container = document.getElementById(`qr-${code.id}`);
+        if (container && container.innerHTML === '') {
+          const canvas = document.createElement('canvas');
+          new QRious({
+            element: canvas,
+            value: code.content,
+            size: 120,
+            foreground: code.color,
+            background: '#ffffff',
+            level: 'H'
+          });
+          container.appendChild(canvas);
+        }
+      });
+      
+      // Click on history item to view details
+      document.querySelectorAll('.history-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          if (!e.target.closest('.history-item-actions')) {
+            const id = item.dataset.id;
+            this.showModal(id);
+          }
+        });
+      });
+      
+      // Download buttons
+      document.querySelectorAll('.download-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          this.downloadHistoryItem(id);
+        });
+      });
+      
+      // Delete buttons
+      document.querySelectorAll('.delete-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          this.deleteHistoryItem(id);
+        });
+      });
+    }
+
+    showModal(id) {
+      const codes = this.storage.getAll();
+      const code = codes.find(c => c.id === id);
+      if (!code) return;
+      
+      this.modalTitle.textContent = code.name;
+      this.modalQR.innerHTML = '';
+      
+      const canvas = document.createElement('canvas');
+      new QRious({
+        element: canvas,
+        value: code.content,
+        size: 256,
+        foreground: code.color,
+        background: '#ffffff',
+        level: 'H'
+      });
+      this.modalQR.appendChild(canvas);
+      
+      const date = new Date(code.createdAt);
+      const formattedDate = date.toLocaleString('es-ES', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      this.modalInfo.innerHTML = `
+        <p><strong>Tipo:</strong> ${code.isWhatsApp ? 'WhatsApp' : this.getTypeName(code.type)}</p>
+        <p><strong>Contenido:</strong> ${code.displayContent}</p>
+        <p><strong>Creado:</strong> ${formattedDate}</p>
+        <p><strong>Color:</strong> ${code.color}</p>
+      `;
+      
+      this.modal.classList.add('active');
+      this.currentModalCode = code;
+    }
+
+    closeModal() {
+      this.modal.classList.remove('active');
+      this.currentModalCode = null;
+    }
+
+    downloadModalQR(format) {
+      if (!this.currentModalCode) return;
+      
+      const canvas = this.modalQR.querySelector('canvas');
+      if (!canvas) return;
+      
+      if (format === 'png') {
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${this.currentModalCode.name.replace(/[^a-z0-9]/gi, '_')}_${this.currentModalCode.id}.png`;
+        a.click();
+      } else if (format === 'svg') {
+        this.downloadCanvasAsSVG(canvas, this.currentModalCode.name);
+      }
+    }
+
+    downloadHistoryItem(id) {
+      const codes = this.storage.getAll();
+      const code = codes.find(c => c.id === id);
+      if (!code) return;
+      
+      const container = document.getElementById(`qr-${id}`);
+      const canvas = container.querySelector('canvas');
+      if (!canvas) return;
+      
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${code.name.replace(/[^a-z0-9]/gi, '_')}_${code.id}.png`;
+      a.click();
+    }
+
+    deleteHistoryItem(id) {
+      if (confirm('¿Estás seguro de que deseas eliminar este código QR?')) {
+        this.storage.delete(id);
+        this.loadHistory(this.searchInput.value);
+        this.updateStats();
+      }
+    }
+
+    searchHistory(term) {
+      this.loadHistory(term);
+    }
+
+    clearAllHistory() {
+      if (confirm('¿Estás seguro de que deseas eliminar TODOS los códigos QR? Esta acción no se puede deshacer.')) {
+        this.storage.clear();
+        this.loadHistory();
+        this.updateStats();
+      }
+    }
+
+    updateStats() {
+      const codes = this.storage.getAll();
+      this.totalQRs.textContent = codes.length;
+    }
+  }
+
+  // Initialize app when DOM and QRious are ready
+  new QRGenerator();
+  
+  }); // End window.addEventListener('load')
+</script>

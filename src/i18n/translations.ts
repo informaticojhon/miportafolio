@@ -4,6 +4,7 @@ export const translations = {
     nav: {
       about: 'Sobre mí',
       projects: 'Proyectos',
+      tools: 'Herramientas',
       contact: 'Contacto',
     },
     hero: {
@@ -61,6 +62,7 @@ export const translations = {
     nav: {
       about: 'About',
       projects: 'Projects',
+      tools: 'Tools',
       contact: 'Contact',
     },
     hero: {
