@@ -196,6 +196,28 @@ import Footer from "../components/Footer.astro";
             <h3>Vista Previa</h3>
             <div class="qr-preview" id="qrPreview"></div>
             <div class="preview-info" id="previewInfo"></div>
+            
+            <!-- Unique Code Display -->
+            <div class="unique-code-box" id="uniqueCodeBox" style="display:none;">
+              <div class="unique-code-content">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 12V10M10 8H10.01M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div>
+                  <p class="unique-code-label">Código único para recuperar tu QR:</p>
+                  <div class="unique-code-value-box">
+                    <span class="unique-code-value" id="uniqueCodeValue"></span>
+                    <button class="btn-copy-code" id="copyCodeBtn" title="Copiar código">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4V2C4 1.46957 4.21071 0.960859 4.58579 0.585786C4.96086 0.210714 5.46957 0 6 0H14C14.5304 0 15.0391 0.210714 15.4142 0.585786C15.7893 0.960859 16 1.46957 16 2V10C16 10.5304 15.7893 11.0391 15.4142 11.4142C15.0391 11.7893 14.5304 12 14 12H12M2 4H10C11.1046 4 12 4.89543 12 6V14C12 15.1046 11.1046 16 10 16H2C0.89543 16 0 15.1046 0 14V6C0 4.89543 0.89543 4 2 4Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <small class="unique-code-hint">Guarda este código para recuperar tu QR más tarde</small>
+                </div>
+              </div>
+            </div>
+
             <div class="button-group">
               <button class="btn btn-secondary" id="downloadBtn">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -213,14 +235,53 @@ import Footer from "../components/Footer.astro";
           </div>
         </section>
 
-        <!-- History Section -->
+        <!-- Search QR Section -->
         <section class="history-section">
           <div class="card history-card">
             <div class="history-header">
-              <h2>Historial de Códigos QR</h2>
+              <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; margin-right:0.5rem;">
+                  <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Buscar mi Código QR
+              </h2>
+            </div>
+            <div class="search-qr-section">
+              <p class="search-description">Ingresa tu código único de 6 caracteres para recuperar tu código QR</p>
+              <div class="search-qr-input-group">
+                <input 
+                  type="text" 
+                  id="codeSearchInput" 
+                  class="code-search-input" 
+                  placeholder="Ej: ABC123"
+                  maxlength="6"
+                  autocomplete="off"
+                >
+                <button class="btn btn-primary" id="searchCodeBtn" style="width:auto;">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 19L13 13M15 8C15 11.866 11.866 15 8 15C4.13401 15 1 11.866 1 8C1 4.13401 4.13401 1 8 1C11.866 1 15 4.13401 15 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Buscar
+                </button>
+              </div>
+              <div id="searchResultBox" class="search-result-box" style="display:none;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- My QR Codes Section (Hidden by default) -->
+        <section class="history-section">
+          <div class="card history-card">
+            <div class="history-header">
+              <h2>Mis Códigos QR</h2>
               <div class="history-actions">
-                <input type="text" id="searchInput" class="search-input" placeholder="Buscar...">
-                <button class="btn btn-danger-outline" id="clearAllBtn">
+                <button class="btn btn-outline" id="toggleHistoryBtn">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 1V9M9 9H17M9 9L1 1M1 17L9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span id="toggleHistoryText">Mostrar mis códigos</span>
+                </button>
+                <button class="btn btn-danger-outline" id="clearAllBtn" style="display:none;">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 5H15M7 8V13M11 8V13M4 5L5 15C5 15.5304 5.21071 16.0391 5.58579 16.4142C5.96086 16.7893 6.46957 17 7 17H11C11.5304 17 12.0391 16.7893 12.4142 16.4142C12.7893 16.0391 13 15.5304 13 15L14 5M6 5V3C6 2.73478 6.10536 2.48043 6.29289 2.29289C6.48043 2.10536 6.73478 2 7 2H11C11.2652 2 11.5196 2.10536 11.7071 2.29289C11.8946 2.48043 12 2.73478 12 3V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -228,16 +289,18 @@ import Footer from "../components/Footer.astro";
                 </button>
               </div>
             </div>
-            <div class="history-grid" id="historyGrid">
-              <div class="empty-state">
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="15" y="15" width="50" height="50" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
-                  <rect x="25" y="25" width="8" height="8" fill="currentColor"/>
-                  <rect x="25" y="47" width="8" height="8" fill="currentColor"/>
-                  <rect x="47" y="25" width="8" height="8" fill="currentColor"/>
-                </svg>
-                <p>No hay códigos QR guardados todavía</p>
-                <p class="empty-subtitle">Genera tu primer código QR para comenzar</p>
+            <div id="historyContainer" style="display:none;">
+              <div class="history-grid" id="historyGrid">
+                <div class="empty-state">
+                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="15" y="15" width="50" height="50" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+                    <rect x="25" y="25" width="8" height="8" fill="currentColor"/>
+                    <rect x="25" y="47" width="8" height="8" fill="currentColor"/>
+                    <rect x="47" y="25" width="8" height="8" fill="currentColor"/>
+                  </svg>
+                  <p>No hay códigos QR guardados todavía</p>
+                  <p class="empty-subtitle">Genera tu primer código QR para comenzar</p>
+                </div>
               </div>
             </div>
           </div>
@@ -687,6 +750,226 @@ import Footer from "../components/Footer.astro";
     margin-bottom: 1rem;
   }
 
+  /* Unique Code Box */
+  .unique-code-box {
+    display: none;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .unique-code-content {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .unique-code-content svg {
+    color: var(--primary-color);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .unique-code-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .unique-code-value-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .unique-code-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 0.2em;
+    flex: 1;
+  }
+
+  .btn-copy-code {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-copy-code:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+  }
+
+  .btn-copy-code:active {
+    transform: scale(0.95);
+  }
+
+  .unique-code-hint {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+  }
+
+  /* Search QR Section */
+  .search-qr-section {
+    padding: 1rem 0;
+  }
+
+  .search-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .search-qr-input-group {
+    display: flex;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .code-search-input {
+    flex: 1;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .code-search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .search-result-box {
+    background: var(--bg-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    animation: fadeInUp 0.3s ease;
+  }
+
+  .search-result-qr {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-result-info {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .search-result-info p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  .search-result-info strong {
+    color: var(--text-primary);
+  }
+
+  .search-error {
+    text-align: center;
+    padding: 2rem;
+    color: var(--danger-color);
+  }
+
+  .search-error svg {
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .search-success {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .search-qr-preview {
+    flex-shrink: 0;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .search-qr-info {
+    flex: 1;
+  }
+
+  .search-qr-info h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  .search-qr-info p {
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    word-break: break-word;
+  }
+
+  .search-qr-info code {
+    background: rgba(168, 85, 247, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+
+  .search-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .search-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .search-success {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .search-actions {
+      width: 100%;
+    }
+    
+    .search-actions .btn {
+      flex: 1;
+    }
+  }
+
   /* History Section */
   .history-card {
     grid-column: 1 / -1;
@@ -1081,6 +1364,21 @@ import Footer from "../components/Footer.astro";
       this.storageKey = 'qr_pro_codes';
     }
 
+    // Generate unique 6-character code
+    generateUniqueCode() {
+      const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Excluding similar looking chars
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        code += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      // Check if code already exists
+      const codes = this.getAll();
+      if (codes.some(c => c.uniqueCode === code)) {
+        return this.generateUniqueCode(); // Recursive if collision
+      }
+      return code;
+    }
+
     getAll() {
       try {
         const data = localStorage.getItem(this.storageKey);
@@ -1094,13 +1392,22 @@ import Footer from "../components/Footer.astro";
     save(qrData) {
       try {
         const codes = this.getAll();
+        // Add unique code if not present
+        if (!qrData.uniqueCode) {
+          qrData.uniqueCode = this.generateUniqueCode();
+        }
         codes.unshift(qrData);
         localStorage.setItem(this.storageKey, JSON.stringify(codes));
-        return true;
+        return qrData.uniqueCode;
       } catch (error) {
         console.error('Error saving QR code:', error);
-        return false;
+        return null;
       }
+    }
+
+    findByCode(code) {
+      const codes = this.getAll();
+      return codes.find(c => c.uniqueCode === code.toUpperCase());
     }
 
     delete(id) {
@@ -1177,9 +1484,21 @@ import Footer from "../components/Footer.astro";
       this.downloadBtn = document.getElementById('downloadBtn');
       this.downloadSvgBtn = document.getElementById('downloadSvgBtn');
       
+      // Unique code elements
+      this.uniqueCodeBox = document.getElementById('uniqueCodeBox');
+      this.uniqueCodeValue = document.getElementById('uniqueCodeValue');
+      this.copyCodeBtn = document.getElementById('copyCodeBtn');
+      
+      // Search elements
+      this.codeSearchInput = document.getElementById('codeSearchInput');
+      this.searchCodeBtn = document.getElementById('searchCodeBtn');
+      this.searchResultBox = document.getElementById('searchResultBox');
+      
       // History elements
       this.historyGrid = document.getElementById('historyGrid');
-      this.searchInput = document.getElementById('searchInput');
+      this.historyContainer = document.getElementById('historyContainer');
+      this.toggleHistoryBtn = document.getElementById('toggleHistoryBtn');
+      this.toggleHistoryText = document.getElementById('toggleHistoryText');
       this.clearAllBtn = document.getElementById('clearAllBtn');
       this.totalQRs = document.getElementById('totalQRs');
       
@@ -1225,8 +1544,22 @@ import Footer from "../components/Footer.astro";
       this.downloadBtn.addEventListener('click', () => this.downloadQR('png'));
       this.downloadSvgBtn.addEventListener('click', () => this.downloadQR('svg'));
       
+      // Copy unique code button
+      this.copyCodeBtn.addEventListener('click', () => this.copyUniqueCode());
+      
+      // Search by code
+      this.codeSearchInput.addEventListener('input', (e) => {
+        e.target.value = e.target.value.toUpperCase();
+      });
+      this.codeSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') this.searchByCode();
+      });
+      this.searchCodeBtn.addEventListener('click', () => this.searchByCode());
+      
+      // Toggle history visibility
+      this.toggleHistoryBtn.addEventListener('click', () => this.toggleHistory());
+      
       // History actions
-      this.searchInput.addEventListener('input', (e) => this.searchHistory(e.target.value));
       this.clearAllBtn.addEventListener('click', () => this.clearAllHistory());
       
       // Modal
@@ -1443,9 +1776,13 @@ import Footer from "../components/Footer.astro";
         timestamp: Date.now()
       };
       
-      this.storage.save(qrData);
-      this.currentQR = qrData;
+      const uniqueCode = this.storage.save(qrData);
+      this.currentQR = { ...qrData, uniqueCode };
       this.currentQRCanvas = this.qrPreview.querySelector('canvas');
+      
+      // Show unique code
+      this.uniqueCodeBox.style.display = 'flex';
+      this.uniqueCodeValue.textContent = uniqueCode;
       
       // Update UI
       this.loadHistory();
@@ -1954,10 +2291,172 @@ import Footer from "../components/Footer.astro";
       const codes = this.storage.getAll();
       this.totalQRs.textContent = codes.length;
     }
+
+    copyUniqueCode() {
+      const code = this.uniqueCodeValue.textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        // Visual feedback
+        const originalText = this.copyCodeBtn.innerHTML;
+        this.copyCodeBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
+        this.copyCodeBtn.style.background = '#10b981';
+        
+        setTimeout(() => {
+          this.copyCodeBtn.innerHTML = originalText;
+          this.copyCodeBtn.style.background = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Error copiando código:', err);
+        alert('Error al copiar el código');
+      });
+    }
+
+    async searchByCode() {
+      const code = this.codeSearchInput.value.trim();
+      
+      if (!code) {
+        alert('Por favor, ingresa un código para buscar');
+        return;
+      }
+      
+      if (code.length !== 6) {
+        this.searchResultBox.innerHTML = `
+          <div class="search-error">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <p>El código debe tener 6 caracteres</p>
+          </div>
+        `;
+        this.searchResultBox.style.display = 'flex';
+        return;
+      }
+      
+      const qrData = this.storage.findByCode(code);
+      
+      if (!qrData) {
+        this.searchResultBox.innerHTML = `
+          <div class="search-error">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <p>No se encontró ningún código QR con el código: <strong>${code}</strong></p>
+            <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">Verifica que el código sea correcto</p>
+          </div>
+        `;
+        this.searchResultBox.style.display = 'flex';
+        return;
+      }
+      
+      // Show QR result
+      const canvas = await this.regenerateQRWithStyle(qrData, 200);
+      const date = new Date(qrData.createdAt);
+      const formattedDate = date.toLocaleDateString('es-ES', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      this.searchResultBox.innerHTML = `
+        <div class="search-success">
+          <div class="search-qr-preview"></div>
+          <div class="search-qr-info">
+            <h3>${qrData.name}</h3>
+            <p><strong>Tipo:</strong> ${qrData.isWhatsApp ? 'WhatsApp' : this.getTypeName(qrData.type)}</p>
+            <p><strong>Contenido:</strong> ${qrData.displayContent}</p>
+            <p><strong>Código único:</strong> <code>${qrData.uniqueCode}</code></p>
+            <p><strong>Creado:</strong> ${formattedDate}</p>
+            <div class="search-actions">
+              <button class="btn btn-primary" onclick="app.downloadSearchResult('${qrData.id}', 'png')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Descargar PNG
+              </button>
+              <button class="btn" onclick="app.downloadSearchResult('${qrData.id}', 'svg')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Descargar SVG
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      this.searchResultBox.style.display = 'flex';
+      this.searchResultBox.querySelector('.search-qr-preview').appendChild(canvas);
+      
+      // Store for download
+      this.searchResultCanvas = canvas;
+      this.searchResultData = qrData;
+    }
+
+    toggleHistory() {
+      const isHidden = this.historyContainer.style.display === 'none';
+      
+      if (isHidden) {
+        this.historyContainer.style.display = 'block';
+        this.toggleHistoryText.textContent = 'Ocultar Historial';
+        this.toggleHistoryBtn.querySelector('svg').style.transform = 'rotate(180deg)';
+      } else {
+        this.historyContainer.style.display = 'none';
+        this.toggleHistoryText.textContent = 'Ver Historial Completo';
+        this.toggleHistoryBtn.querySelector('svg').style.transform = 'rotate(0deg)';
+      }
+    }
+
+    downloadSearchResult(id, format) {
+      if (!this.searchResultCanvas || !this.searchResultData) return;
+      
+      const qrData = this.searchResultData;
+      const fileName = `${qrData.name.replace(/\s+/g, '_')}_${qrData.uniqueCode}`;
+      
+      if (format === 'svg') {
+        // Convert canvas to SVG
+        const svgData = this.canvasToSVG(this.searchResultCanvas);
+        const blob = new Blob([svgData], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${fileName}.svg`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        // High-res PNG export
+        const highResCanvas = document.createElement('canvas');
+        highResCanvas.width = 1024;
+        highResCanvas.height = 1024;
+        const ctx = highResCanvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(this.searchResultCanvas, 0, 0, 1024, 1024);
+        
+        highResCanvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${fileName}.png`;
+          a.click();
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      }
+    }
   }
 
-  // Initialize app when DOM and QRious are ready
-  new QRGenerator();
+  // Initialize app when DOM and QRious are ready and make it globally accessible
+  window.app = new QRGenerator();
   
   }); // End window.addEventListener('load')
 </script>
