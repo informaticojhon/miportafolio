@@ -268,64 +268,11 @@ import Footer from "../components/Footer.astro";
             </div>
           </div>
         </section>
-
-        <!-- My QR Codes Section (Hidden by default) -->
-        <section class="history-section">
-          <div class="card history-card">
-            <div class="history-header">
-              <h2>Mis Códigos QR</h2>
-              <div class="history-actions">
-                <button class="btn btn-outline" id="toggleHistoryBtn">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 1V9M9 9H17M9 9L1 1M1 17L9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <span id="toggleHistoryText">Mostrar mis códigos</span>
-                </button>
-                <button class="btn btn-danger-outline" id="clearAllBtn" style="display:none;">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 5H15M7 8V13M11 8V13M4 5L5 15C5 15.5304 5.21071 16.0391 5.58579 16.4142C5.96086 16.7893 6.46957 17 7 17H11C11.5304 17 12.0391 16.7893 12.4142 16.4142C12.7893 16.0391 13 15.5304 13 15L14 5M6 5V3C6 2.73478 6.10536 2.48043 6.29289 2.29289C6.48043 2.10536 6.73478 2 7 2H11C11.2652 2 11.5196 2.10536 11.7071 2.29289C11.8946 2.48043 12 2.73478 12 3V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Limpiar Todo
-                </button>
-              </div>
-            </div>
-            <div id="historyContainer" style="display:none;">
-              <div class="history-grid" id="historyGrid">
-                <div class="empty-state">
-                  <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="15" y="15" width="50" height="50" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
-                    <rect x="25" y="25" width="8" height="8" fill="currentColor"/>
-                    <rect x="25" y="47" width="8" height="8" fill="currentColor"/>
-                    <rect x="47" y="25" width="8" height="8" fill="currentColor"/>
-                  </svg>
-                  <p>No hay códigos QR guardados todavía</p>
-                  <p class="empty-subtitle">Genera tu primer código QR para comenzar</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
 
       <!-- Footer Info -->
       <div class="qr-footer">
         <p>© 2025 QR Pro Generator - Códigos QR permanentes y sin vencimiento</p>
-      </div>
-    </div>
-
-    <!-- Modal for QR Details -->
-    <div class="modal" id="qrModal">
-      <div class="modal-content">
-        <button class="modal-close" id="modalClose">&times;</button>
-        <h3 id="modalTitle"></h3>
-        <div class="modal-body">
-          <div id="modalQR" class="modal-qr"></div>
-          <div class="modal-info" id="modalInfo"></div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" id="modalDownloadBtn">Descargar PNG</button>
-          <button class="btn btn-outline" id="modalDownloadSvgBtn">Descargar SVG</button>
-        </div>
       </div>
     </div>
   </div>
@@ -1441,8 +1388,6 @@ import Footer from "../components/Footer.astro";
       this.currentQR = null;
       this.initElements();
       this.initEventListeners();
-      this.loadHistory();
-      this.updateStats();
       console.log('QR Generator inicializado correctamente');
     }
 
@@ -1493,23 +1438,6 @@ import Footer from "../components/Footer.astro";
       this.codeSearchInput = document.getElementById('codeSearchInput');
       this.searchCodeBtn = document.getElementById('searchCodeBtn');
       this.searchResultBox = document.getElementById('searchResultBox');
-      
-      // History elements
-      this.historyGrid = document.getElementById('historyGrid');
-      this.historyContainer = document.getElementById('historyContainer');
-      this.toggleHistoryBtn = document.getElementById('toggleHistoryBtn');
-      this.toggleHistoryText = document.getElementById('toggleHistoryText');
-      this.clearAllBtn = document.getElementById('clearAllBtn');
-      this.totalQRs = document.getElementById('totalQRs');
-      
-      // Modal elements
-      this.modal = document.getElementById('qrModal');
-      this.modalClose = document.getElementById('modalClose');
-      this.modalTitle = document.getElementById('modalTitle');
-      this.modalQR = document.getElementById('modalQR');
-      this.modalInfo = document.getElementById('modalInfo');
-      this.modalDownloadBtn = document.getElementById('modalDownloadBtn');
-      this.modalDownloadSvgBtn = document.getElementById('modalDownloadSvgBtn');
     }
 
     initEventListeners() {
@@ -1555,20 +1483,6 @@ import Footer from "../components/Footer.astro";
         if (e.key === 'Enter') this.searchByCode();
       });
       this.searchCodeBtn.addEventListener('click', () => this.searchByCode());
-      
-      // Toggle history visibility
-      this.toggleHistoryBtn.addEventListener('click', () => this.toggleHistory());
-      
-      // History actions
-      this.clearAllBtn.addEventListener('click', () => this.clearAllHistory());
-      
-      // Modal
-      this.modalClose.addEventListener('click', () => this.closeModal());
-      this.modal.addEventListener('click', (e) => {
-        if (e.target === this.modal) this.closeModal();
-      });
-      this.modalDownloadBtn.addEventListener('click', () => this.downloadModalQR('png'));
-      this.modalDownloadSvgBtn.addEventListener('click', () => this.downloadModalQR('svg'));
     }
 
     handleLogoUpload(e) {
@@ -1783,10 +1697,6 @@ import Footer from "../components/Footer.astro";
       // Show unique code
       this.uniqueCodeBox.style.display = 'flex';
       this.uniqueCodeValue.textContent = uniqueCode;
-      
-      // Update UI
-      this.loadHistory();
-      this.updateStats();
       
       // Scroll to preview
       this.previewCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -2054,244 +1964,6 @@ import Footer from "../components/Footer.astro";
       URL.revokeObjectURL(url);
     }
 
-    loadHistory(searchTerm = '') {
-      const codes = this.storage.getAll();
-      
-      if (codes.length === 0) {
-        this.historyGrid.innerHTML = `
-          <div class="empty-state">
-            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="15" y="15" width="50" height="50" rx="4" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
-              <rect x="25" y="25" width="8" height="8" fill="currentColor"/>
-              <rect x="25" y="47" width="8" height="8" fill="currentColor"/>
-              <rect x="47" y="25" width="8" height="8" fill="currentColor"/>
-            </svg>
-            <p>No hay códigos QR guardados todavía</p>
-            <p class="empty-subtitle">Genera tu primer código QR para comenzar</p>
-          </div>
-        `;
-        return;
-      }
-      
-      // Filter by search term
-      const filtered = searchTerm 
-        ? codes.filter(code => 
-            code.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            code.displayContent.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        : codes;
-      
-      if (filtered.length === 0) {
-        this.historyGrid.innerHTML = `
-          <div class="empty-state">
-            <p>No se encontraron resultados</p>
-          </div>
-        `;
-        return;
-      }
-      
-      this.historyGrid.innerHTML = filtered.map(code => this.createHistoryItem(code)).join('');
-      
-      // Add event listeners to history items
-      this.attachHistoryListeners();
-    }
-
-    createHistoryItem(code) {
-      const date = new Date(code.createdAt);
-      const formattedDate = date.toLocaleDateString('es-ES', { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric' 
-      });
-      
-      return `
-        <div class="history-item" data-id="${code.id}">
-          <div class="history-item-qr" id="qr-${code.id}"></div>
-          <div class="history-item-info">
-            <div class="history-item-name">${code.name}</div>
-            <div class="history-item-content">${code.displayContent}</div>
-          </div>
-          <div class="history-item-meta">
-            <span class="history-item-type">${code.isWhatsApp ? 'WhatsApp' : this.getTypeName(code.type)}</span>
-            <span class="history-item-date">${formattedDate}</span>
-          </div>
-          <div class="history-item-actions">
-            <button class="icon-btn download-item" data-id="${code.id}" title="Descargar">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 3V11M9 11L6 8M9 11L12 8M3 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="icon-btn delete delete-item" data-id="${code.id}" title="Eliminar">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 5H15M7 8V13M11 8V13M4 5L5 15C5 15.5304 5.21071 16.0391 5.58579 16.4142C5.96086 16.7893 6.46957 17 7 17H11C11.5304 17 12.0391 16.7893 12.4142 16.4142C12.7893 16.0391 13 15.5304 13 15L14 5M6 5V3C6 2.73478 6.10536 2.48043 6.29289 2.29289C6.48043 2.10536 6.73478 2 7 2H11C11.2652 2 11.5196 2.10536 11.7071 2.29289C11.8946 2.48043 12 2.73478 12 3V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    attachHistoryListeners() {
-      // Generate QR codes for history items with their custom styles
-      const codes = this.storage.getAll();
-      codes.forEach(async (code) => {
-        const container = document.getElementById(`qr-${code.id}`);
-        if (container && container.innerHTML === '') {
-          const canvas = await this.regenerateQRWithStyle(code, 120);
-          container.appendChild(canvas);
-        }
-      });
-      
-      // Click on history item to view details
-      document.querySelectorAll('.history-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-          if (!e.target.closest('.history-item-actions')) {
-            const id = item.dataset.id;
-            this.showModal(id);
-          }
-        });
-      });
-      
-      // Download buttons
-      document.querySelectorAll('.download-item').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.id;
-          this.downloadHistoryItem(id);
-        });
-      });
-      
-      // Delete buttons
-      document.querySelectorAll('.delete-item').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const id = btn.dataset.id;
-          this.deleteHistoryItem(id);
-        });
-      });
-    }
-
-    async showModal(id) {
-      const codes = this.storage.getAll();
-      const code = codes.find(c => c.id === id);
-      if (!code) return;
-      
-      this.modalTitle.textContent = code.name;
-      this.modalQR.innerHTML = '';
-      
-      // Regenerate QR with saved styles
-      const canvas = await this.regenerateQRWithStyle(code, 384);
-      this.modalQR.appendChild(canvas);
-      
-      const date = new Date(code.createdAt);
-      const formattedDate = date.toLocaleString('es-ES', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-      
-      const styleInfo = code.style ? `
-        <p><strong>Estilo:</strong> ${this.getStyleName(code.style)}</p>
-        <p><strong>Esquinas:</strong> ${this.getCornerStyleName(code.cornerStyle)}</p>
-      ` : '';
-      
-      const logoInfo = code.hasLogo ? `<p><strong>Logo:</strong> Sí (${code.logoSize}%)</p>` : '';
-      
-      this.modalInfo.innerHTML = `
-        <p><strong>Tipo:</strong> ${code.isWhatsApp ? 'WhatsApp' : this.getTypeName(code.type)}</p>
-        <p><strong>Contenido:</strong> ${code.displayContent}</p>
-        <p><strong>Creado:</strong> ${formattedDate}</p>
-        <p><strong>Color:</strong> ${code.color}</p>
-        ${styleInfo}
-        ${logoInfo}
-      `;
-      
-      this.modal.classList.add('active');
-      this.currentModalCode = code;
-    }
-
-    getStyleName(style) {
-      const styles = {
-        'squares': 'Cuadrados',
-        'dots': 'Puntos redondos',
-        'rounded': 'Esquinas redondeadas'
-      };
-      return styles[style] || style;
-    }
-
-    getCornerStyleName(cornerStyle) {
-      const styles = {
-        'square': 'Cuadrado',
-        'dot': 'Punto',
-        'rounded': 'Redondeado'
-      };
-      return styles[cornerStyle] || cornerStyle;
-    }
-
-    closeModal() {
-      this.modal.classList.remove('active');
-      this.currentModalCode = null;
-    }
-
-    async downloadModalQR(format) {
-      if (!this.currentModalCode) return;
-      
-      // Regenerate high-res version
-      const canvas = await this.regenerateQRWithStyle(this.currentModalCode, 1024);
-      
-      if (format === 'png') {
-        const url = canvas.toDataURL('image/png');
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${this.currentModalCode.name.replace(/[^a-z0-9]/gi, '_')}_${this.currentModalCode.id}.png`;
-        a.click();
-      } else if (format === 'svg') {
-        this.downloadCanvasAsSVG(canvas, this.currentModalCode.name);
-      }
-    }
-
-    async downloadHistoryItem(id) {
-      const codes = this.storage.getAll();
-      const code = codes.find(c => c.id === id);
-      if (!code) return;
-      
-      // Regenerate high-res version
-      const canvas = await this.regenerateQRWithStyle(code, 1024);
-      
-      const url = canvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${code.name.replace(/[^a-z0-9]/gi, '_')}_${code.id}.png`;
-      a.click();
-    }
-
-    deleteHistoryItem(id) {
-      if (confirm('¿Estás seguro de que deseas eliminar este código QR?')) {
-        this.storage.delete(id);
-        this.loadHistory(this.searchInput.value);
-        this.updateStats();
-      }
-    }
-
-    searchHistory(term) {
-      this.loadHistory(term);
-    }
-
-    clearAllHistory() {
-      if (confirm('¿Estás seguro de que deseas eliminar TODOS los códigos QR? Esta acción no se puede deshacer.')) {
-        this.storage.clear();
-        this.loadHistory();
-        this.updateStats();
-      }
-    }
-
-    updateStats() {
-      const codes = this.storage.getAll();
-      this.totalQRs.textContent = codes.length;
-    }
-
     copyUniqueCode() {
       const code = this.uniqueCodeValue.textContent;
       navigator.clipboard.writeText(code).then(() => {
@@ -2402,20 +2074,6 @@ import Footer from "../components/Footer.astro";
       // Store for download
       this.searchResultCanvas = canvas;
       this.searchResultData = qrData;
-    }
-
-    toggleHistory() {
-      const isHidden = this.historyContainer.style.display === 'none';
-      
-      if (isHidden) {
-        this.historyContainer.style.display = 'block';
-        this.toggleHistoryText.textContent = 'Ocultar Historial';
-        this.toggleHistoryBtn.querySelector('svg').style.transform = 'rotate(180deg)';
-      } else {
-        this.historyContainer.style.display = 'none';
-        this.toggleHistoryText.textContent = 'Ver Historial Completo';
-        this.toggleHistoryBtn.querySelector('svg').style.transform = 'rotate(0deg)';
-      }
     }
 
     downloadSearchResult(id, format) {
