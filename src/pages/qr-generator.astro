@@ -235,6 +235,67 @@ import Footer from "../components/Footer.astro";
           </div>
         </section>
 
+        <!-- Upload & Edit QR Section -->
+        <section class="upload-section">
+          <div class="card upload-card">
+            <div class="upload-header">
+              <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block; vertical-align:middle; margin-right:0.5rem;">
+                  <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Editar QR Existente
+              </h2>
+              <p class="section-subtitle">Sube tu código QR para decodificar y editar su contenido</p>
+            </div>
+            
+            <div class="upload-zone" id="uploadZone">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32 8V40M32 8L20 20M32 8L44 20M8 56H56M16 32H12C10.9391 32 9.92172 32.4214 9.17157 33.1716C8.42143 33.9217 8 34.9391 8 36V52C8 53.0609 8.42143 54.0783 9.17157 54.8284C9.92172 55.5786 10.9391 56 12 56H52C53.0609 56 54.0783 55.5786 54.8284 54.8284C55.5786 54.0783 56 53.0609 56 52V36C56 34.9391 55.5786 33.9217 54.8284 33.1716C54.0783 32.4214 53.0609 32 52 32H48" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h3>Arrastra tu imagen QR aquí</h3>
+              <p>o haz clic para seleccionar</p>
+              <input type="file" id="qrUploadInput" class="upload-input" accept="image/*">
+              <button class="btn btn-outline" id="uploadBtn">Seleccionar imagen</button>
+            </div>
+
+            <div class="decoded-section" id="decodedSection" style="display:none;">
+              <div class="decoded-header">
+                <h3>Contenido Decodificado</h3>
+                <button class="btn btn-outline btn-sm" id="clearUploadBtn">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Limpiar
+                </button>
+              </div>
+
+              <div class="uploaded-qr-preview" id="uploadedQRPreview"></div>
+
+              <div class="form-group">
+                <label for="decodedContent">Contenido actual:</label>
+                <textarea id="decodedContent" class="input-field textarea-field" rows="4" readonly></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="newContent">Nuevo contenido:</label>
+                <textarea id="newContent" class="input-field textarea-field" rows="4" placeholder="Escribe el nuevo contenido para tu QR..."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="editQRName">Nombre del nuevo QR</label>
+                <input type="text" id="editQRName" class="input-field" placeholder="Ej: QR Actualizado">
+              </div>
+
+              <button class="btn btn-primary" id="regenerateQRBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 4V10H7M19 16V10H13M18.3 7.5C17.5 5.7 16.1 4.2 14.3 3.2C11.7 1.8 8.6 1.8 6 3.2C3.4 4.6 1.7 7.1 1.3 10M18.7 10C18.3 12.9 16.6 15.4 14 16.8C11.4 18.2 8.3 18.2 5.7 16.8C3.9 15.8 2.5 14.3 1.7 12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Regenerar QR con Nuevo Contenido
+              </button>
+            </div>
+          </div>
+        </section>
+
         <!-- Search QR Section -->
         <section class="history-section">
           <div class="card history-card">
@@ -774,6 +835,121 @@ import Footer from "../components/Footer.astro";
     font-size: 0.75rem;
   }
 
+  /* Upload & Edit QR Section */
+  .upload-section {
+    grid-column: 1 / -1;
+  }
+
+  .upload-card {
+    margin-bottom: 2rem;
+  }
+
+  .upload-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .section-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+  }
+
+  .upload-zone {
+    border: 3px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.05);
+  }
+
+  .upload-zone.dragover {
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.1);
+    transform: scale(1.02);
+  }
+
+  .upload-zone svg {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .upload-zone h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  .upload-zone p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .decoded-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+    animation: fadeInUp 0.3s ease;
+  }
+
+  .decoded-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .decoded-header h3 {
+    margin: 0;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .uploaded-qr-preview {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .uploaded-qr-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 4px;
+  }
+
+  .textarea-field {
+    min-height: 100px;
+    resize: vertical;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+
   /* Search QR Section */
   .search-qr-section {
     padding: 1rem 0;
@@ -1295,6 +1471,7 @@ import Footer from "../components/Footer.astro";
 </style>
 
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script is:inline>
   // Wait for QRious to load
   window.addEventListener('load', function() {
@@ -1434,6 +1611,18 @@ import Footer from "../components/Footer.astro";
       this.uniqueCodeValue = document.getElementById('uniqueCodeValue');
       this.copyCodeBtn = document.getElementById('copyCodeBtn');
       
+      // Upload & Edit elements
+      this.uploadZone = document.getElementById('uploadZone');
+      this.qrUploadInput = document.getElementById('qrUploadInput');
+      this.uploadBtn = document.getElementById('uploadBtn');
+      this.decodedSection = document.getElementById('decodedSection');
+      this.uploadedQRPreview = document.getElementById('uploadedQRPreview');
+      this.decodedContent = document.getElementById('decodedContent');
+      this.newContent = document.getElementById('newContent');
+      this.editQRName = document.getElementById('editQRName');
+      this.regenerateQRBtn = document.getElementById('regenerateQRBtn');
+      this.clearUploadBtn = document.getElementById('clearUploadBtn');
+      
       // Search elements
       this.codeSearchInput = document.getElementById('codeSearchInput');
       this.searchCodeBtn = document.getElementById('searchCodeBtn');
@@ -1474,6 +1663,29 @@ import Footer from "../components/Footer.astro";
       
       // Copy unique code button
       this.copyCodeBtn.addEventListener('click', () => this.copyUniqueCode());
+      
+      // Upload & Edit QR
+      this.uploadBtn.addEventListener('click', () => this.qrUploadInput.click());
+      this.qrUploadInput.addEventListener('change', (e) => this.handleQRUpload(e));
+      this.regenerateQRBtn.addEventListener('click', () => this.regenerateFromUpload());
+      this.clearUploadBtn.addEventListener('click', () => this.clearUpload());
+      
+      // Drag and drop
+      this.uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        this.uploadZone.classList.add('dragover');
+      });
+      this.uploadZone.addEventListener('dragleave', () => {
+        this.uploadZone.classList.remove('dragover');
+      });
+      this.uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        this.uploadZone.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+          this.processQRImage(file);
+        }
+      });
       
       // Search by code
       this.codeSearchInput.addEventListener('input', (e) => {
@@ -1984,6 +2196,149 @@ import Footer from "../components/Footer.astro";
         console.error('Error copiando código:', err);
         alert('Error al copiar el código');
       });
+    }
+
+    handleQRUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        this.processQRImage(file);
+      }
+    }
+
+    async processQRImage(file) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const img = new Image();
+        img.onload = async () => {
+          // Display uploaded image
+          this.uploadedQRPreview.innerHTML = '';
+          const displayImg = img.cloneNode();
+          displayImg.style.maxWidth = '200px';
+          displayImg.style.maxHeight = '200px';
+          this.uploadedQRPreview.appendChild(displayImg);
+
+          // Decode QR
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height);
+          
+          if (code) {
+            this.decodedContent.value = code.data;
+            this.decodedSection.style.display = 'block';
+            this.uploadZone.style.display = 'none';
+          } else {
+            alert('No se pudo detectar un código QR en la imagen. Por favor, intenta con otra imagen.');
+          }
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async regenerateFromUpload() {
+      const newContentValue = this.newContent.value.trim();
+      
+      if (!newContentValue) {
+        alert('Por favor, ingresa el nuevo contenido para el código QR');
+        return;
+      }
+
+      // Use current customization settings
+      const style = this.qrStyle.value;
+      const cornerStyle = this.cornerStyle.value;
+      const color = this.qrColor.value;
+      const name = this.editQRName.value.trim() || 'QR Editado';
+
+      try {
+        // Generate new QR with the new content
+        const canvas = document.createElement('canvas');
+        const size = 512;
+        canvas.width = size;
+        canvas.height = size;
+        
+        const tempCanvas = document.createElement('canvas');
+        const qr = new QRious({
+          element: tempCanvas,
+          value: newContentValue,
+          size: size,
+          foreground: color,
+          background: '#ffffff',
+          level: 'H'
+        });
+        
+        this.applyCustomStyle(canvas, tempCanvas, style, cornerStyle);
+        
+        // Add logo if available
+        if (this.logoImage) {
+          const logoSizePercent = parseInt(this.logoSize.value);
+          this.addLogoToQR(canvas, this.logoImage, logoSizePercent);
+        }
+        
+        // Show in preview
+        this.qrPreview.innerHTML = '';
+        const previewCanvas = document.createElement('canvas');
+        previewCanvas.width = 256;
+        previewCanvas.height = 256;
+        const previewCtx = previewCanvas.getContext('2d');
+        previewCtx.imageSmoothingEnabled = true;
+        previewCtx.imageSmoothingQuality = 'high';
+        previewCtx.drawImage(canvas, 0, 0, 256, 256);
+        this.qrPreview.appendChild(previewCanvas);
+        
+        // Save to storage
+        const qrData = {
+          id: Date.now().toString(),
+          name: name,
+          type: 'text',
+          content: newContentValue,
+          displayContent: newContentValue.substring(0, 100) + (newContentValue.length > 100 ? '...' : ''),
+          color: color,
+          style: style,
+          cornerStyle: cornerStyle,
+          hasLogo: !!this.logoImage,
+          logoData: this.logoImage ? this.logoImage.src : null,
+          logoSize: this.logoImage ? parseInt(this.logoSize.value) : 20,
+          isWhatsApp: false,
+          createdAt: new Date().toISOString(),
+          timestamp: Date.now()
+        };
+        
+        const uniqueCode = this.storage.save(qrData);
+        this.currentQR = { ...qrData, uniqueCode };
+        this.currentQRCanvas = canvas;
+        
+        // Show preview and unique code
+        this.previewCard.style.display = 'flex';
+        this.previewInfo.innerHTML = `<strong>Texto</strong><br>${qrData.displayContent}`;
+        this.uniqueCodeBox.style.display = 'flex';
+        this.uniqueCodeValue.textContent = uniqueCode;
+        
+        // Clear upload section
+        this.clearUpload();
+        
+        // Scroll to preview
+        this.previewCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        alert('¡Código QR regenerado con éxito!');
+      } catch (error) {
+        console.error('Error regenerando QR:', error);
+        alert('Error al regenerar el código QR. Por favor, intenta de nuevo.');
+      }
+    }
+
+    clearUpload() {
+      this.decodedSection.style.display = 'none';
+      this.uploadZone.style.display = 'block';
+      this.qrUploadInput.value = '';
+      this.uploadedQRPreview.innerHTML = '';
+      this.decodedContent.value = '';
+      this.newContent.value = '';
+      this.editQRName.value = '';
     }
 
     async searchByCode() {
